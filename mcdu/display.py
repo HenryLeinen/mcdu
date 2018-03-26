@@ -11,8 +11,21 @@ full_spacing = 112
 
 KEY_CLR = 20
 KEY_DEL = 21
-KEY_MENU= 115
 KEY_DIR = 100
+KEY_PROG= 101
+KEY_PERF= 102
+KEY_INIT= 103
+KEY_DATA= 104
+KEY_F_PLN=110
+KEY_RAD_NAV=111
+KEY_FUEL_PRED=112
+KEY_SEC_F_PLN=113
+KEY_ATC_COMM=114
+KEY_MENU= 115
+KEY_AIRPORT=120
+KEY_PAGE_UP=121
+KEY_PAGE_DN=122
+KEY_NEXT_PAGE=130
 KEY_LSK1L = 1
 KEY_LSK6L = 6
 KEY_LSK1R = 11
@@ -189,6 +202,24 @@ class myDisplay(object):
 		elif cmd == KEY_MENU:
 			print "KEY: MENU"
 			self.mcdu.menu()
+		elif cmd == KEY_DIR:
+			print "KEY: DIR"
+			self.mcdu.dir()
+		elif cmd == KEY_PROG:
+			print "KEY: PROG"
+			self.mcdu.prog()
+		elif cmd == KEY_F_PLN:
+			print "KEY: F-PLN"
+			self.mcdu.f_pln()
+		elif cmd == KEY_PERF:
+			print "KEY: PERF"
+			self.mcdu.perf()
+		elif cmd == KEY_INIT:
+			print "KEY: INIT"
+			self.mcdu.init()
+		elif cmd == KEY_DATA:
+			print "KEY: DATA"
+			self.mcdu.data()
 		elif cmd >= KEY_A and cmd <= KEY_Z:
 			self.mcdu.scratch_input(byte)
 		elif cmd >= KEY_0 and cmd <= KEY_9:

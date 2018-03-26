@@ -23,6 +23,42 @@ class MCDU():
         """Show the menu page."""
         self.show(MenuPage)
 
+    def dir(self):
+	"""Show the dir page."""
+	print "TBD: DIR handling"
+
+    def prog(self):
+	"""Show the prog page."""
+	print "TBD: PROG handling"
+
+    def perf(self):
+	"""Show the perf page."""
+	print "TBD: PERF handling"
+
+    def init(self):
+	"""Show the init page."""
+	print "TBD: INIT handling"
+
+    def data(self):
+	"""Show the data page."""
+	print "TBD: DATA handling"
+
+    def f_pln(self):
+	"""Show the flightplan page."""
+	print "TBD: F_PLN handling"
+
+    def rad_nav(self):
+	"""Show the rad_nav page."""
+	print "TBD: RAD_NAV handling"
+
+    def airport(self):
+	"""Show the airport page."""
+	print "TBD: AIRPORT handling"
+
+    def next_page(self):
+	"""Show the next page."""
+	print "TBD: NEXT_PAGE handling"
+
     def show(self, page):
         """Switch to the given page."""
         self.page = page(self, self.sys)
