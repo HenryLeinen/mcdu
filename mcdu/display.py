@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 from Tkinter import *
 from keyboard import keyboard
 import tkFont

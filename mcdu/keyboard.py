@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 class keyboard:
 
 	def interpret_char(self, char):

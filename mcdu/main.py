@@ -4,11 +4,8 @@ from mcdu.core import MCDU
 from mcdu.acars import ACARS
 from mcdu.atc import ATC
 from mcdu.network import ACARS_API
-from display import myDisplay
-#from mcdu.websocket import WebSocket
-
-#import tornado.ioloop
-#import tornado.web
+from mcdu.display import myDisplay
+from s_data import DATA
 
 import os, sys
 
@@ -39,10 +36,12 @@ def run():
     api = ACARS_API(config.get("ACARS", "logon"))
     acars = ACARS(api)
     atc = ATC(api)
+    data = DATA(api)
 
     mcdu = MCDU()
     mcdu.subsystem_register(acars)
     mcdu.subsystem_register(atc)
+    mcdu.subsystem_register(data)
     mcdu.menu()
 
     application = myDisplay()
