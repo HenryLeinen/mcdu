@@ -22,13 +22,13 @@ def run():
 
     sim = config.get("General", "sim")
     if sim == "fsx":
-        from mcdu.fsx import FSXReceiver
+        from fsx import FSXReceiver
         receiver = FSXReceiver()
     elif sim == "xplane":
-        from mcdu.xplane import XPlaneReceiver
+        from xplane import XPlaneReceiver
         receiver = XPlaneReceiver()
     else:
-        print("no simulator set");
+        print("no simulator set")
         return 1
 
     receiver.start()
@@ -45,21 +45,17 @@ def run():
     mcdu.menu()
 
     application = myDisplay()
-#    application = tornado.web.Application([
-#        (r"^/socket", WebSocket, dict(mcdu=mcdu)),
-#        (r"^/(.*)$", tornado.web.StaticFileHandler, {"path": "res/", "default_filename": "index.html"}),
-#    ], debug=False)
 
     port = config.getint("General", "port")
-#    application.listen(port)
 
     application.initialize(mcdu)
     application.open()
 
     try:
         print("running on port %i" % port)
-	# Call my application here
-	application.mainloop()
+	    # Call my application here
+        application.mainloop()
+#        receiver.run()
     except KeyboardInterrupt:
         print("quitting...")
     except Exception as e:

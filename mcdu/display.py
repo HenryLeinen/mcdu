@@ -1,6 +1,14 @@
-from Tkinter import *
+try:
+	from Tkinter import *
+except ImportError:
+	from tkinter import *
+
 from keyboard import keyboard
-import tkFont
+
+try:
+	import tkFont
+except ImportError:
+	import tkinter.font
 import time
 
 ttlsize = 30
@@ -34,16 +42,19 @@ VAL_HDG = -1
 class myDisplay(object):
 
 	def __init__(self):
-		print "Class myDisplay initialize"
+		print ("Class myDisplay initialize")
 		self.root = Tk()
-		self.fnt_ttl = tkFont.Font(family='AirbusMCDUa', size=ttlsize)
-		self.fnt_big = tkFont.Font(family='AirbusMCDUa', size=bigsize)
-		self.fnt_sml = tkFont.Font(family='AirbusMCDUa', size=smlsize)
+#		self.fnt_ttl = tkFont.Font(family='AirbusMCDUa', size=ttlsize)
+# 		self.fnt_big = tkFont.Font(family='AirbusMCDUa', size=bigsize)
+#		self.fnt_sml = tkFont.Font(family='AirbusMCDUa', size=smlsize)
+		self.fnt_ttl = tkinter.font.Font(family='AirbusMCDUa', size=ttlsize)
+		self.fnt_big = tkinter.font.Font(family='AirbusMCDUa', size=bigsize)
+		self.fnt_sml = tkinter.font.Font(family='AirbusMCDUa', size=smlsize)
 
 	# required method, called from main
 	def initialize(self, mcdu):
 		self.LOOP_ACTIVE = True
-		print "Initializing"
+		print ("Initializing")
 		self.createWidgets()
 		self.mcdu = mcdu
 		self.keyboard = keyboard()
@@ -85,10 +96,30 @@ class myDisplay(object):
 		self.mcdu.remove_display(self)
 		self.root.destroy()
 #		self.keyboard.close()
-		print "Exiting"
+		print ("Exiting")
 
-	def on_click(self, event):
-		self.on_close()
+	def on_click(self, eventorigin):
+		if eventorigin.x < colt:
+			side = 0
+		else:
+			side = 1
+		if eventorigin.y < row1 and eventorigin.y > row0:
+			row = 0
+		elif eventorigin.y < row2 and eventorigin.y > row1:
+			row = 1
+		elif eventorigin.y < row3 and eventorigin.y > row2:
+			row = 2
+		elif eventorigin.y < row4 and eventorigin.y > row3:
+			row = 3
+		elif eventorigin.y < row5 and eventorigin.y > row4:
+			row = 4
+		elif eventorigin.y < rowsc and eventorigin.y > row5:
+			row = 5
+		else:
+			row = -1
+			self.on_close()
+		if row != -1:
+			self.mcdu.lsk((row,side))
 
 	# required method
 	def update(self):
@@ -114,8 +145,8 @@ class myDisplay(object):
 				self.w.itemconfigure(t+"Rs",text=" ")
 
 	def createWidgets(self):
-		print "Creating widgets"
- 		self.root.overrideredirect(True)
+		print ("Creating widgets")
+		self.root.overrideredirect(True)
 		self.root.wm_geometry("1024x768")
 		self.root.bind("<Button-1>", self.on_click)
 		self.w = Canvas(self.root, width=1024, height=768, bd=0, highlightthickness=0, bg='black', relief='ridge')
@@ -157,14 +188,15 @@ class myDisplay(object):
 		self.w.create_text( colr, row5s,text=" ", font=self.fnt_big, fill="#ffffff", tags="LSK5Rs",anchor=NE)
 
 	def mainloop(self):
-		print "Entering Mainloop"
+		print ("Entering Mainloop")
 		self.LOOP_ACTIVE = True
 		while self.LOOP_ACTIVE:
-			self.root.update()
+#			self.root.update()
+			self.root.mainloop()
 			message = self.keyboard.read()
 			if message != "":
 				self.on_message(message)
-		print "Leaving Mainloop"
+		print ("Leaving Mainloop")
 
 
 

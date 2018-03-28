@@ -1,4 +1,4 @@
-from mcdu.page import Page
+from page import Page
 
 class MCDU():
     def __init__(self):
@@ -24,40 +24,48 @@ class MCDU():
         self.show(MenuPage)
 
     def dir(self):
-	"""Show the dir page."""
-	print "TBD: DIR handling"
+        """Show the dir page."""
+#        print "TBD: DIR handling"
+        pass
 
     def prog(self):
-	"""Show the prog page."""
-	print "TBD: PROG handling"
+        """Show the prog page."""
+#        print "TBD: PROG handling"
+        pass
 
     def perf(self):
-	"""Show the perf page."""
-	print "TBD: PERF handling"
+        """Show the perf page."""
+#        print "TBD: PERF handling"
+        pass
 
     def init(self):
-	"""Show the init page."""
-	print "TBD: INIT handling"
+        """Show the init page."""
+#        print "TBD: INIT handling"
+        pass
 
     def data(self):
-	"""Show the data page."""
-	print "TBD: DATA handling"
+        """Show the data page."""
+#        print "TBD: DATA handling"
+        pass
 
     def f_pln(self):
-	"""Show the flightplan page."""
-	print "TBD: F_PLN handling"
+        """Show the flightplan page."""
+#        print "TBD: F_PLN handling"
+        pass
 
     def rad_nav(self):
-	"""Show the rad_nav page."""
-	print "TBD: RAD_NAV handling"
+        """Show the rad_nav page."""
+#        print "TBD: RAD_NAV handling"
+        pass
 
     def airport(self):
-	"""Show the airport page."""
-	print "TBD: AIRPORT handling"
+        """Show the airport page."""
+#        print "TBD: AIRPORT handling"
+        pass
 
     def next_page(self):
-	"""Show the next page."""
-	self.sys.next_page()
+        """Show the next page."""
+        self.sys.next_page()
 
     def show(self, page):
         """Switch to the given page."""
