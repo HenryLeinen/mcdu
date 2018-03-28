@@ -1,6 +1,6 @@
-from mcdu.subsystem import Subsystem
-from mcdu.avionics import Avionics
-from mcdu.page import Page, Field
+from subsystem import Subsystem
+from avionics import Avionics
+from page import Page, Field
 
 import textwrap, time, os
 

@@ -1,3 +1,5 @@
+import sys
+
 class keyboard:
 
 	def interpret_char(self, char):
@@ -9,7 +11,10 @@ class keyboard:
 		return message
 
 	def open(self):
-		self.file = open("/dev/kbdscan","ro")
+		try:
+			self.file = open("/dev/kbdscan","ro")
+		except:
+			self.file = sys.stdin
 		try:
 			from configparser import SafeConfigParser
 		except ImportError:
@@ -57,11 +62,11 @@ class keyboard:
 	def read(self):
 		byte = self.file.read(1)
 		if byte != "":
-			print "Received char "+byte+" KeyCode:" + str(ord(byte))
+			print ("Received char "+byte+" KeyCode:" + str(ord(byte)))
 			message = self.interpret_char(byte)
 			if not message:
 				message=byte
-			print "Maps to message "+message
+			print ("Maps to message "+message)
 		else:
 			message = ""
 		return message

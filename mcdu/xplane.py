@@ -114,34 +114,34 @@ class XPlaneReceiver(threading.Thread):
                 header = data[0:5]
                 if header != b"RREF\x00":
                     print ("Unknown packet received !", binascii.hexlify(data))
-                else:
+#                else:
                     # we get 8 bytes for each dataref sent:
                     # an integer for the idx and the float value
-                    values = data[5:12]
-                    (freq, idx) = struct.unpack("<ii")
-                    values = data[13:]
-                    if #### IMPLEMENT THE PARSING OF DATA AT THIS TIME ALREADY 
+#                    values = data[5:12]
+ #                   (freq, idx) = struct.unpack("<ii")
+ #                   values = data[13:]
+#                    if #### IMPLEMENT THE PARSING OF DATA AT THIS TIME ALREADY 
                         #
 
                     
-                    lenvalue = 8
-                    numvalues = int(len(values)/lenvalue)
-                    for i in range(0, numvalues):
-                        singledata=data[(9+lenvalue*i):(9+lenvalue*(i+1))]
-                        (idx, value) = struct.unpack("<if", singledata)
-                        if (idx == 3):
-                            print ("GPS: ", binascii.hexlify(data))
-                        if idx in self.datarefs.keys():
-                            # convert negativ 0.0 values to positive 0.0
-                            if value < 0.0 and value > -0.001 :
-                                value = 0.0
-                            retvalues[self.datarefs[idx]] = value
-
-                self.xplaneValues.update(retvalues)
-                self.parse(retvalues)
+#                    lenvalue = 8
+#                    numvalues = int(len(values)/lenvalue)
+#                    for i in range(0, numvalues):
+#                        singledata=data[(9+lenvalue*i):(9+lenvalue*(i+1))]
+#                        (idx, value) = struct.unpack("<if", singledata)
+#                        if (idx == 3):
+#                            print ("GPS: ", binascii.hexlify(data))
+#                        if idx in self.datarefs.keys():
+#                            # convert negativ 0.0 values to positive 0.0
+#                            if value < 0.0 and value > -0.001 :
+#                                value = 0.0
+#                            retvalues[self.datarefs[idx]] = value
+#
+#                self.xplaneValues.update(retvalues)
+#                self.parse(retvalues)
             except socket.timeout:
                 print ("Timeout on XPlaneReceiver")
-                self.do_request()
+#                self.do_request()
                 pass
             except:
                 print ("Bullshit exception")

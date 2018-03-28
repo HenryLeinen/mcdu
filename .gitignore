@@ -102,3 +102,4 @@ ENV/
 
 # nano backups
 .py.save
+mcdu/.display.py.swp
