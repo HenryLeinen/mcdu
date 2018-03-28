@@ -14,3 +14,7 @@ class Subsystem(threading.Thread):
 
     def stop(self):
         self.running = False
+
+    def next_page(self):
+	pass
+	# do nothing, has to be handled in the derived class

@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
-from mcdu.core import MCDU
-from mcdu.acars import ACARS
-from mcdu.atc import ATC
-from mcdu.network import ACARS_API
-from mcdu.display import myDisplay
+from core import MCDU
+from acars import ACARS
+from atc import ATC
+from network import ACARS_API
+from display import myDisplay
 from s_data import DATA
 
 import os, sys

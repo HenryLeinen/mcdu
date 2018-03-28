@@ -59,6 +59,8 @@ class myDisplay(object):
 			self.mcdu.scratch_delete()
 		elif message == "CLR":
 			self.mcdu.scratch_clear()
+		elif message == "NEXT_PAGE":
+			self.mcdu.next_page()
 		elif message.startswith("LSK"):
 			num = int(message[3])
 			if message[4] == "L": side = 0

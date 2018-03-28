@@ -10,11 +10,19 @@ class DATA(Subsystem):
 		self.api = api
 
 	def activate(self):
-		self.mcdu.show(DataIndexPage)
+		self.mcdu.show(DataIndexPage1)
+		self.activePage = 1
 
+	def next_page(self):
+		if self.activePage == 2:
+			self.mcdu.show(DataIndexPage1)
+			self.activePage = 1
+		else:
+			self.mcdu.show(DataIndexPage2)
+			self.activePage = 2
 
-class DataIndexPage(Page):
-	title = "DATA INDEX"
+class DataIndexPage1(Page):
+	title = "DATA INDEX 1/2"
 
 	def init(self):
 		self.field(0, "POSITION", "<MONITOR", action=self.position_monitor)
@@ -42,4 +50,48 @@ class DataIndexPage(Page):
 		pass
 
 	def aoc(self):
+		pass
+
+
+class DataIndexPage2(Page):
+	title = "DATA INDEX 2/2"
+	def init(self):
+		self.field(0, "", "<WAYPOINTS", action=self.waypoints)
+		self.field(0, "PILOTS", "WAYPOINTS>", action=self.pilotWaypoints)
+		self.field(1, "", "<NAVAIDS", action=self.navaids)
+		self.field(1, "PILOTS", "NAVAIDS>", action=self.pilotNavaids)
+		self.field(2, "", "<RUNWAYS", action=self.runways)
+		self.field(2, "PILOTS", "RUNWAYS>", action=self.pilotRunways)
+		self.field(3, "", "<ROUTES", action=self.routes)
+		self.field(3, "PILOTS", "ROUTES>", action=self.pilotRoutes)
+		self.field(4, "ACTIVE F-PLN", "<WINDS", action=self.winds)
+		self.field(5, "SEC F-PLN", "<WINDS", action=self.secWinds)
+	def waypoints(self):
+		pass
+
+	def pilotWaypoints(self):
+		pass
+
+	def navaids(self):
+		pass
+
+	def pilotNavaids(self):
+		pass
+
+	def runways(self):
+		pass
+
+	def pilotRunways(self):
+		pass
+
+	def routes(self):
+		pass
+
+	def pilotRoutes(self):
+		pass
+
+	def winds(self):
+		pass
+
+	def secWinds(self):
 		pass

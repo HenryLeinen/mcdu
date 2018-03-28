@@ -57,7 +57,7 @@ class MCDU():
 
     def next_page(self):
 	"""Show the next page."""
-	print "TBD: NEXT_PAGE handling"
+	self.sys.next_page()
 
     def show(self, page):
         """Switch to the given page."""
