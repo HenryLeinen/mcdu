@@ -8,7 +8,7 @@ from keyboard import keyboard
 try:
 	import tkFont
 except ImportError:
-	import tkinter.font
+	import tkinter.font as tkFont
 import time
 
 ttlsize = 30
@@ -44,12 +44,9 @@ class myDisplay(object):
 	def __init__(self):
 		print ("Class myDisplay initialize")
 		self.root = Tk()
-#		self.fnt_ttl = tkFont.Font(family='AirbusMCDUa', size=ttlsize)
-# 		self.fnt_big = tkFont.Font(family='AirbusMCDUa', size=bigsize)
-#		self.fnt_sml = tkFont.Font(family='AirbusMCDUa', size=smlsize)
-		self.fnt_ttl = tkinter.font.Font(family='AirbusMCDUa', size=ttlsize)
-		self.fnt_big = tkinter.font.Font(family='AirbusMCDUa', size=bigsize)
-		self.fnt_sml = tkinter.font.Font(family='AirbusMCDUa', size=smlsize)
+		self.fnt_ttl = tkFont.Font(family='AirbusMCDUa', size=ttlsize)
+		self.fnt_big = tkFont.Font(family='AirbusMCDUa', size=bigsize)
+		self.fnt_sml = tkFont.Font(family='AirbusMCDUa', size=smlsize)
 
 	# required method, called from main
 	def initialize(self, mcdu):
@@ -191,8 +188,7 @@ class myDisplay(object):
 		print ("Entering Mainloop")
 		self.LOOP_ACTIVE = True
 		while self.LOOP_ACTIVE:
-#			self.root.update()
-			self.root.mainloop()
+			self.root.update()
 			message = self.keyboard.read()
 			if message != "":
 				self.on_message(message)

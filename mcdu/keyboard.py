@@ -11,10 +11,11 @@ class keyboard:
 		return message
 
 	def open(self):
+		self.noInput = False
 		try:
 			self.file = open("/dev/kbdscan","ro")
 		except:
-			self.file = sys.stdin
+			self.noInput = True
 		try:
 			from configparser import SafeConfigParser
 		except ImportError:
@@ -57,18 +58,21 @@ class keyboard:
 
 
 	def close(self):
-		self.file.close()
+#		self.file.close()
+		pass
 
 	def read(self):
-		byte = self.file.read(1)
-		if byte != "":
-			print ("Received char "+byte+" KeyCode:" + str(ord(byte)))
-			message = self.interpret_char(byte)
-			if not message:
-				message=byte
-			print ("Maps to message "+message)
-		else:
-			message = ""
+		message = ""
+		if not self.noInput:
+			byte = self.file.read(1)
+			if byte != "":
+				print ("Received char "+byte+" KeyCode:" + str(ord(byte)))
+				message = self.interpret_char(byte)
+				if not message:
+					message=byte
+				print ("Maps to message "+message)
+			else:
+				message = ""
 		return message
 
 
