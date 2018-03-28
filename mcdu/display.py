@@ -1,6 +1,15 @@
-from Tkinter import *
+try:
+	from Tkinter import *
+except ImportError:
+	from tkinter import *
+
 from keyboard import keyboard
-import tkFont
+
+try:
+	import tkFont
+except ImportError:
+	import tkinter.font as tkFont
+
 import time
 
 ttlsize = 30
