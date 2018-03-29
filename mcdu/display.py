@@ -43,7 +43,7 @@ VAL_HDG = -1
 class myDisplay(object):
 
 	def __init__(self):
-		print "Class myDisplay initialize"
+		print ("Class myDisplay initialize")
 		self.root = Tk()
 		self.fnt_ttl = tkFont.Font(family='AirbusMCDUa', size=ttlsize)
 		self.fnt_big = tkFont.Font(family='AirbusMCDUa', size=bigsize)
@@ -52,7 +52,7 @@ class myDisplay(object):
 	# required method, called from main
 	def initialize(self, mcdu):
 		self.LOOP_ACTIVE = True
-		print "Initializing"
+		print ("Initializing")
 		self.createWidgets()
 		self.mcdu = mcdu
 		self.keyboard = keyboard()
@@ -94,7 +94,7 @@ class myDisplay(object):
 		self.mcdu.remove_display(self)
 		self.root.destroy()
 #		self.keyboard.close()
-		print "Exiting"
+		print ("Exiting")
 
 	def on_click(self, eventorigin):
 		if eventorigin.x < colt:
@@ -111,10 +111,10 @@ class myDisplay(object):
 			row = 3
 		elif eventorigin.y < row5 and eventorigin.y > row4:
 			row = 4
-		elif eventorigin.y < row6 and eventorigin.y > row5:
+		elif eventorigin.y < rowsc and eventorigin.y > row5:
 			row = 5
 		else:
-			rot = -1
+			row = -1
 			self.on_close()
 		if row != -1:
 			self.mcdu.lsk((row,side))
@@ -143,8 +143,8 @@ class myDisplay(object):
 				self.w.itemconfigure(t+"Rs",text=" ")
 
 	def createWidgets(self):
-		print "Creating widgets"
- 		self.root.overrideredirect(True)
+		print ("Creating widgets")
+		self.root.overrideredirect(True)
 		self.root.wm_geometry("1024x768")
 		self.root.bind("<Button-1>", self.on_click)
 		self.w = Canvas(self.root, width=1024, height=768, bd=0, highlightthickness=0, bg='black', relief='ridge')
