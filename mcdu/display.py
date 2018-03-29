@@ -96,8 +96,28 @@ class myDisplay(object):
 #		self.keyboard.close()
 		print "Exiting"
 
-	def on_click(self, event):
-		self.on_close()
+	def on_click(self, eventorigin):
+		if eventorigin.x < colt:
+			side = 0
+		else:
+			side = 1
+		if eventorigin.y < row1 and eventorigin.y > row0:
+			row = 0
+		elif eventorigin.y < row2 and eventorigin.y > row1:
+			row = 1
+		elif eventorigin.y < row3 and eventorigin.y > row2:
+			row = 2
+		elif eventorigin.y < row4 and eventorigin.y > row3:
+			row = 3
+		elif eventorigin.y < row5 and eventorigin.y > row4:
+			row = 4
+		elif eventorigin.y < row6 and eventorigin.y > row5:
+			row = 5
+		else:
+			rot = -1
+			self.on_close()
+		if row != -1:
+			self.mcdu.lsk((row,side))
 
 	# required method
 	def update(self):
@@ -166,14 +186,14 @@ class myDisplay(object):
 		self.w.create_text( colr, row5s,text=" ", font=self.fnt_big, fill="#ffffff", tags="LSK5Rs",anchor=NE)
 
 	def mainloop(self):
-		print "Entering Mainloop"
+		print ("Entering Mainloop")
 		self.LOOP_ACTIVE = True
 		while self.LOOP_ACTIVE:
 			self.root.update()
 			message = self.keyboard.read()
 			if message != "":
 				self.on_message(message)
-		print "Leaving Mainloop"
+		print ("Leaving Mainloop")
 
 
 
