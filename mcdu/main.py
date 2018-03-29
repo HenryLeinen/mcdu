@@ -6,6 +6,7 @@ from atc import ATC
 from network import ACARS_API
 from display import myDisplay
 from s_data import DATA
+from s_init import INIT
 
 import os, sys
 
@@ -37,11 +38,13 @@ def run():
     acars = ACARS(api)
     atc = ATC(api)
     data = DATA(api)
+    init = INIT(api)
 
     mcdu = MCDU()
     mcdu.subsystem_register(acars)
     mcdu.subsystem_register(atc)
     mcdu.subsystem_register(data)
+    mcdu.subsystem_register(init)
     mcdu.menu()
 
     application = myDisplay()

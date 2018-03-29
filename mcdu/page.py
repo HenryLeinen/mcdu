@@ -1,4 +1,6 @@
 import re
+import math
+import time
 
 class Page(object):
     _instance = None
@@ -82,10 +84,41 @@ class Field(object):
     flightno = "^[A-Z]{3}[0-9A-Z]{1,4}$"
     time = "^([01][0-9]|2[0-3])[0-5][0-9]Z$"
     icao = "^[A-Z]{4}$"
+    gpstime = "^([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$"
+    position = "^[0-9]{2}°[0-9]{2}[.][0-9][NS]/(0[0-9]{2}|1[0-8][0-9])°[0-9]{2}[.][0-9][WE]$"
+    coroute = "^GL[A-Z]{8}$"
+    fromto = "^[A-Z0-9]{4}/[A-Z0-9]{4}$"
+    crzfltemp = "^[0-3][0-9]{2}/[-]{0,1}[0-0]{1,2}$"
 
     white = "#ffffff"
     blue = "#20c2e3"
     orange = "#ffaf47"
+    green = "#00ff00"
+
+    def convertToLatitudeString(self, lat):
+        if (lat < 0):
+            lat = -lat
+            d = "S"
+        else:
+            d = "N"
+        p1 = int(math.floor(lat))
+        p2 = int(math.floor((lat-p1)*100))
+        p3 = int(math.floor((((lat-p1)*100)-p2)*100))
+        return u'{0:2d}\u00b0{1:2d}.{2:1d}{3:1s}'.format(p1, p2, p3, d)
+
+    def convertToLongitudeString(self, lon):
+        if lon < 0:
+            d = "W"
+            lon = -lon
+        elif lon > 180.0:
+            d = "W"
+            lon = 360.0 - lon
+        else:
+            d = "E"
+        p1 = int(math.floor(lon))
+        p2 = int(math.floor((lon-p1)*100))
+        p3 = int(math.floor((((lon-p1)*100)-p2)*100))
+        return u'{0:3d}\u00b0{1:2d}.{2:1d}{3:1s}'.format(p1, p2, p3, d)
 
     def __init__(self, title, value, **kwargs):
         self.title = title
@@ -105,7 +138,20 @@ class Field(object):
                 self.color = Field.orange
                 self.value = u"\u25af"*value
             else:
-                self.value = ""
+                if self.format == Field.fromto:
+                    self.value = u"\u25af"*4+"/"+u"\u25af"*4
+                    self.color = Field.orange
+                elif self.format == Field.crzfltemp:
+                    self.value = u"\u25af"*5+"/"+u"\u25af"*3
+                    self.color = Field.orange
+                else:
+                    self.value = ""
+        elif (isinstance(value, time.struct_time)):
+            self.color = Field.blue
+            self.value = time.strftime("%H:%M:%S", value)
+        elif (isinstance(value, tuple)):
+            self.color = Field.green
+            self.value = self.convertToLatitudeString(value[0]) + "/" + self.convertToLongitudeString(value[1])
         else:
             self.value = value
 
