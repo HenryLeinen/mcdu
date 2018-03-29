@@ -1,5 +1,5 @@
-from mcdu.subsystem import Subsystem
-from mcdu.page import Page, Field
+from subsystem import Subsystem
+from page import Page, Field
 
 
 class DATA(Subsystem):
@@ -22,7 +22,7 @@ class DATA(Subsystem):
 			self.activePage = 2
 
 class DataIndexPage1(Page):
-	title = "DATA INDEX 1/2"
+	title = "DATA INDEX     1/2"
 
 	def init(self):
 		self.field(0, "POSITION", "<MONITOR", action=self.position_monitor)
@@ -54,7 +54,8 @@ class DataIndexPage1(Page):
 
 
 class DataIndexPage2(Page):
-	title = "DATA INDEX 2/2"
+	title = "DATA INDEX     2/2"
+
 	def init(self):
 		self.field(0, "", "<WAYPOINTS", action=self.waypoints)
 		self.field(0, "PILOTS", "WAYPOINTS>", action=self.pilotWaypoints)
@@ -66,9 +67,10 @@ class DataIndexPage2(Page):
 		self.field(3, "PILOTS", "ROUTES>", action=self.pilotRoutes)
 		self.field(4, "ACTIVE F-PLN", "<WINDS", action=self.winds)
 		self.field(5, "SEC F-PLN", "<WINDS", action=self.secWinds)
+
 	def waypoints(self):
 		pass
-
+	
 	def pilotWaypoints(self):
 		pass
 
@@ -95,3 +97,19 @@ class DataIndexPage2(Page):
 
 	def secWinds(self):
 		pass
+
+class A_C_StatusPage(Page):
+	title = "Checking..."
+	engine = "Checking.."
+
+	def init(self):
+		self.engine = ""
+		self.title = "Checking"
+
+	def refresh(self):
+		self.clear()
+
+		if self.engine:
+			self.page(1, "    ENG", self.engine)
+
+		Page.refresh(self)

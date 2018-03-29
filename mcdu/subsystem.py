@@ -16,5 +16,4 @@ class Subsystem(threading.Thread):
         self.running = False
 
     def next_page(self):
-	pass
-	# do nothing, has to be handled in the derived class
+        pass

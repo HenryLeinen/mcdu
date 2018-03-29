@@ -194,6 +194,3 @@ class myDisplay(object):
 			if message != "":
 				self.on_message(message)
 		print ("Leaving Mainloop")
-
-
-

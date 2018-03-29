@@ -101,4 +101,5 @@ ENV/
 .mypy_cache/
 
 # nano backups
-*.py.save
+.py.save
+mcdu/.display.py.swp
