@@ -78,7 +78,10 @@ class MCDU():
 
     def scratch_input(self, text):
         """Append a string to the scratchpad."""
-        self.scratch += text
+        if text == "+" and self.scratch.len() >0 and self.scratch[-1] == "+":
+            self.scratch[-1] = "-"
+        else:
+            self.scratch += text
         self.scratch_update()
 
     def scratch_set(self, text):

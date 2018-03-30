@@ -8,7 +8,8 @@ class DATA(Subsystem):
 	def __init__(self, api):
 		Subsystem.__init__(self)
 		self.api = api
-		self.position = (45.781111, 108.5038888)
+		self.latitude = 45.781111
+		self.longitude = 108.5038888
 		self.gpstime = time.localtime()
 		self.gpsalt = 741
 
@@ -122,7 +123,7 @@ class GPSMonitorPage(Page):
 	title = "GPS MONITOR"
 
 	def init(self):
-		self.field(0, "GPS1 POSITION", self.sys.position, format=Field.position, update=self.positionUpdate)
+		self.field(0, "GPS1 POSITION", (self.sys.latitude, self.sys.longitude), format=(Field.latitude, Field.longitude), update=self.positionUpdate, mode=Field.optional, convert=(Field.convertToLatitudeString, Field.convertToLongitudeString))
 		self.field(1, "UTC", self.sys.gpstime, format=Field.gpstime, update=self.timeUpdate)
 		self.field(2, "GPS ALT", self.sys.gpsalt, update=self.gpsAltUpdate)
 

@@ -32,8 +32,8 @@ class InitIndexPage1(Page):
     title = "INIT   <->"
 
     def init(self):
-        self.field(0, "CO RTE", 10, format=Field.coroute, update=self.update_CoRoute)
-        self.field(0, "FROM/TO", 0, format=Field.fromto, update=self.update_FromTo)
+        self.field(0, "CO RTE", 10, format=Field.coroute, update=self.update_CoRoute, mode=Field.mandatory)
+        self.field(0, "FROM/TO", (4,4), format=(Field.icao, Field.icao), update=self.update_FromTo, mode=Field.mandatory)
         self.field(1, "ALTN/CO RTE", 10, format=Field.coroute, update=self.update_AltCoRoute)
         self.field(2, "FLT NBR", 7, format=Field.flightno, update=self.update_FlightNo)
         self.field(2, "", "ALIGN IRS>", action=self.show_alignIRS)
@@ -41,7 +41,7 @@ class InitIndexPage1(Page):
         self.field(3, "LONG", '{0:05d}.{1:1d}'.format(math.floor(self.sys.position[1]), 10*int(self.sys.position[1]-math.floor(self.sys.position[1]))))
         self.field(4, "COST INDEX", 3, update=self.update_CostIndex)
         self.field(4, "", "WIND>", action=self.show_wind)
-        self.field(5, "CRZ FL/TEMP", 0, format=Field.crzfltemp, update=self.update_CrzFlTemp)
+        self.field(5, "CRZ FL/TEMP", (5,3), format=(Field.flightlevel, Field.temperature), update=self.update_CrzFlTemp, mode=Field.optional)
         self.field(5, "TROPO", str(self.sys.tropo), color=Field.blue, update=self.update_tropo)
 
     def update_CoRoute(self, value):

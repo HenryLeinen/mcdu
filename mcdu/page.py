@@ -85,15 +85,19 @@ class Field(object):
     time = "^([01][0-9]|2[0-3])[0-5][0-9]Z$"
     icao = "^[A-Z]{4}$"
     gpstime = "^([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$"
-    position = "^[0-9]{2}°[0-9]{2}[.][0-9][NS]/(0[0-9]{2}|1[0-8][0-9])°[0-9]{2}[.][0-9][WE]$"
+    latitude = "^[0-9]{2}°[0-9]{2}[.][0-9][NS]$"
+    longitude ="^(0[0-9]{2}|1[0-8][0-9])°[0-9]{2}[.][0-9][WE]$"
     coroute = "^GL[A-Z]{8}$"
-    fromto = "^[A-Z0-9]{4}/[A-Z0-9]{4}$"
-    crzfltemp = "^[0-3][0-9]{2}/[-]{0,1}[0-0]{1,2}$"
+    flightlevel = "^([0-3][0-9]{4})|(FL[0-3][0-9]{2}$"
+    temperature = "^[+-][0-9]{2}$"
 
     white = "#ffffff"
     blue = "#20c2e3"
     orange = "#ffaf47"
     green = "#00ff00"
+
+    mandatory = 1
+    optional = 0
 
     def convertToLatitudeString(self, lat):
         if (lat < 0):
@@ -120,44 +124,86 @@ class Field(object):
         p3 = int(math.floor((((lon-p1)*100)-p2)*100))
         return u'{0:3d}\u00b0{1:2d}.{2:1d}{3:1s}'.format(p1, p2, p3, d)
 
+    def convertAltitudeToFlightLevel(self, value):
+        return 'FL{0:3d}'.format(int(value/100))
+
+    # Orange Rectangular fields for mandatory user entered data
+    # Green dash fields for optional user entered data
+    # Whether or not a field is mandatory or optional can be changed 
     def __init__(self, title, value, **kwargs):
         self.title = title
         self.format = kwargs.pop("format", None)
         self.action = kwargs.pop("action", None)
         self.update = kwargs.pop("update", None)
         self.color = kwargs.pop("color", Field.white)
+        self.mode  = kwargs.pop("mode", Field.optional)
+        self.cvtfunc = kwargs.pop("convert", None)
 
         if self.action:
             self.color = Field.blue
 
-        if (type(value) == int):
-            if value < 0:
+        if (type(value) == tuple):
+            if self.mode == Field.optional:
+                self.color = Field.green
+                lst = list(value)
+                for i in range(len(lst)):
+                    if type(lst[i]) == int:
+                        lst[i] = "-"*lst[i]
+                self.value = tuple(lst)
+            else:
+                self.color = Field.orange
+                lst = list(value)
+                for i in range(len(lst)):
+                    if type(lst[i]) == int:
+                        lst[i] = u"\u25af"*lst[i]
+                self.value = tuple(lst)
+
+        elif (type(value) == int):
+            if value < 0 or self.mode == Field.optional:
                 self.color = Field.blue
-                self.value = u"\u23b5"*(-value)
-            elif value > 0:
+                if value < 0:
+                    value = -value
+                self.value = "-"*value
+            elif value > 0 or self.mode == Field.mandatory:
                 self.color = Field.orange
                 self.value = u"\u25af"*value
             else:
-                if self.format == Field.fromto:
-                    self.value = u"\u25af"*4+"/"+u"\u25af"*4
-                    self.color = Field.orange
-                elif self.format == Field.crzfltemp:
-                    self.value = u"\u25af"*5+"/"+u"\u25af"*3
-                    self.color = Field.orange
-                else:
-                    self.value = ""
+                self.value = ""
         elif (isinstance(value, time.struct_time)):
             self.color = Field.blue
             self.value = time.strftime("%H:%M:%S", value)
-        elif (isinstance(value, tuple)):
-            self.color = Field.green
-            self.value = self.convertToLatitudeString(value[0]) + "/" + self.convertToLongitudeString(value[1])
         else:
             self.value = value
 
     def validate(self, value):
-        if self.format and not re.match(self.format, value):
-            raise ValueError
+        if type(value) == tuple:
+            lst = list(value)
+            fmt = list(self.format)
+            for i in range(len(lst)):
+                if fmt[i] and not re.match(fmt[i], lst[i]):
+                    return ValueError
+        else:
+            if self.format and not re.match(self.format, value):
+                raise ValueError
 
     def dump(self):
         return {"title": self.title, "value": self.value, "color": self.color}
+
+    def getValue(self):
+        if type(self.value) == tuple:
+            cvtfl = []
+            if type(self.cvtfunc) == tuple:
+                cvtfl = list(self.cvtfunc)
+            lst = list(self.value)
+            if not cvtfl:
+                strg = str(lst[0])
+            else:
+                strg = cvtfl[0](self, lst[0])
+            for i in range(1, len(lst)):
+                if not cvtfl:
+                    strg += "/" + str(lst[i])
+                else:
+                    strg += "/" + cvtfl[i](self,lst[i])
+            return strg
+        else:
+            return self.value

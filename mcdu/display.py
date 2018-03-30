@@ -46,7 +46,7 @@ class myDisplay(object):
 		print ("Class myDisplay initialize")
 		self.root = Tk()
 		self.fnt_ttl = tkFont.Font(family='AirbusMCDUa', size=ttlsize)
-		self.fnt_big = tkFont.Font(family='AirbusMCDUa', size=bigsize)
+		self.fnt_big = tkFont.Font(family='Inconsolata', size=bigsize)
 		self.fnt_sml = tkFont.Font(family='AirbusMCDUa', size=smlsize)
 
 	# required method, called from main
@@ -62,7 +62,7 @@ class myDisplay(object):
 	def open(self):
 		self.mcdu.add_display(self)
 
-	# unused method, not called hopefully --> instead everything done via messageloop
+	# interpretation of the keyboard messages
 	def on_message(self, message):
 		if message == "DEL":
 			self.mcdu.scratch_delete()
@@ -129,10 +129,10 @@ class myDisplay(object):
 			t = "LSK"+str(i)
 			if field:
 				self.w.itemconfigure(t+"L", text=field[0].title)
-				self.w.itemconfigure(t+"Ls",text=field[0].value, fill=field[0].color)
+				self.w.itemconfigure(t+"Ls",text=field[0].getValue(), fill=field[0].color)
 				if len(field)>1:
 					self.w.itemconfigure(t+"R", text=field[1].title)
-					self.w.itemconfigure(t+"Rs",text=field[1].value, fill=field[1].color)
+					self.w.itemconfigure(t+"Rs",text=field[1].getValue(), fill=field[1].color)
 				else:
 					self.w.itemconfigure(t+"R", text=" ")
 					self.w.itemconfigure(t+"Rs",text=" ")
