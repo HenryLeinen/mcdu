@@ -68,7 +68,10 @@ class Page(object):
         # the selected row into the scratchpad
         if self.mcdu.scratch:
             if not field.update: return
-            value = self.mcdu.scratch
+            if "/" in self.mcdu.scratch:
+		value = tuple(self.mcdu.scratch.split('/'))
+	    else:
+            	value = self.mcdu.scratch
             try:
                 field.validate(value)
                 field.update(value)
@@ -85,10 +88,10 @@ class Field(object):
     time = "^([01][0-9]|2[0-3])[0-5][0-9]Z$"
     icao = "^[A-Z]{4}$"
     gpstime = "^([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$"
-    latitude = "^[0-9]{2}°[0-9]{2}[.][0-9][NS]$"
-    longitude ="^(0[0-9]{2}|1[0-8][0-9])°[0-9]{2}[.][0-9][WE]$"
+    latitude = u"^[0-9]{2}\u00b0[0-9]{2}[.][0-9][NS]$"
+    longitude =u"^(0[0-9]{2}|1[0-8][0-9])\u00b0[0-9]{2}[.][0-9][WE]$"
     coroute = "^GL[A-Z]{8}$"
-    flightlevel = "^([0-3][0-9]{4})|(FL[0-3][0-9]{2}$"
+    flightlevel = "^([0-3][0-9]{4})|(FL[0-3][0-9]{2})$"
     temperature = "^[+-][0-9]{2}$"
 
     white = "#ffffff"
@@ -180,11 +183,15 @@ class Field(object):
             lst = list(value)
             fmt = list(self.format)
             for i in range(len(lst)):
-                if fmt[i] and not re.match(fmt[i], lst[i]):
-                    return ValueError
+		if fmt[i] and not re.match(fmt[i], lst[i]):
+			return ValueError
         else:
-            if self.format and not re.match(self.format, value):
-                raise ValueError
+            try:
+            	if self.format and not re.match(self.format, value):
+                	raise ValueError
+	    except:
+		print ("Fehlder bei " + str(value), str(self.format))
+		raise ValueError
 
     def dump(self):
         return {"title": self.title, "value": self.value, "color": self.color}
@@ -196,12 +203,12 @@ class Field(object):
                 cvtfl = list(self.cvtfunc)
             lst = list(self.value)
             if not cvtfl:
-                strg = str(lst[0])
+		strg = lst[0]
             else:
                 strg = cvtfl[0](self, lst[0])
             for i in range(1, len(lst)):
                 if not cvtfl:
-                    strg += "/" + str(lst[i])
+                    strg += "/" + lst[i]
                 else:
                     strg += "/" + cvtfl[i](self,lst[i])
             return strg
