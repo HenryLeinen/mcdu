@@ -48,7 +48,7 @@ class DataIndexPage1(Page):
 		self.mcdu.show(GPSMonitorPage)
 
 	def a_c_status(self):
-		pass
+		self.mcdu.show(A_C_StatusPage)
 
 	def prnt(self):
 		pass
@@ -109,14 +109,17 @@ class A_C_StatusPage(Page):
 	def init(self):
 		self.engine = ""
 		self.title = "Checking"
+		self.field(1, "ENG", "A320", color=Field.green)
+		self.field(2, "ACTIVE NAV DATA BASE", self.mcdu.database.getId(), color=Field.blue)
 
-	def refresh(self):
-		self.clear()
+#	def refresh(self):
+#		pass
+#		self.clear()
 
-		if self.engine:
-			self.page(1, "    ENG", self.engine)
+#		if self.engine:
+#			self.page(1, "    ENG", self.engine)
 
-		Page.refresh(self)
+#		Page.refresh(self)
 
 
 class GPSMonitorPage(Page):

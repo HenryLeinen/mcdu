@@ -1,4 +1,5 @@
 from page import Page
+from database import Database
 
 class MCDU():
     def __init__(self):
@@ -7,6 +8,11 @@ class MCDU():
         self.subsystems = []
         self.displays = []
         self.scratch = ""
+        self.database = None
+
+    def database_register(self, database):
+        """Register database, eventually pre load data"""
+        self.database = database
 
     def subsystem_register(self, subsystem):
         """Register and start the given subsystem."""

@@ -1,5 +1,6 @@
 from subsystem import Subsystem
 from page import Page, Field
+from database import *
 import math
 
 class INIT(Subsystem):
@@ -50,6 +51,12 @@ class InitIndexPage1(Page):
 
     def update_FromTo(self, value):
         self.sys.fromto = value
+        aptFrom = self.mcdu.database.findAirport(value[0])
+        aptTo = self.mcdu.database.findAirport(value[1])
+        if aptFrom:
+            aptFrom.dump()
+        if aptTo:
+            aptTo.dump()
 
     def update_AltCoRoute(self, value):
         self.sys.AltCoRoute = value

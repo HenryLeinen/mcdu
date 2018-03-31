@@ -7,6 +7,7 @@ from network import ACARS_API
 from display import myDisplay
 from s_data import DATA
 from s_init import INIT
+from database import Database
 
 import os, sys
 
@@ -32,6 +33,7 @@ def run():
         print("no simulator set")
         return 1
 
+    db = Database()
     receiver.start()
 
     api = ACARS_API(config.get("ACARS", "logon"))
@@ -45,6 +47,7 @@ def run():
     mcdu.subsystem_register(atc)
     mcdu.subsystem_register(data)
     mcdu.subsystem_register(init)
+    mcdu.database_register(db)
     mcdu.menu()
 
     application = myDisplay()
