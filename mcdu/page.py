@@ -69,8 +69,8 @@ class Page(object):
         if self.mcdu.scratch:
             if not field.update: return
             if "/" in self.mcdu.scratch:
-		value = tuple(self.mcdu.scratch.split('/'))
-	    else:
+                value = tuple(self.mcdu.scratch.split('/'))
+            else:
             	value = self.mcdu.scratch
             try:
                 field.validate(value)
@@ -183,15 +183,15 @@ class Field(object):
             lst = list(value)
             fmt = list(self.format)
             for i in range(len(lst)):
-		if fmt[i] and not re.match(fmt[i], lst[i]):
-			return ValueError
+                if fmt[i] and not re.match(fmt[i], lst[i]):
+                    return ValueError
         else:
             try:
             	if self.format and not re.match(self.format, value):
                 	raise ValueError
-	    except:
-		print ("Fehlder bei " + str(value), str(self.format))
-		raise ValueError
+            except:
+                print ("Fehler bei " + str(value), str(self.format))
+                raise ValueError
 
     def dump(self):
         return {"title": self.title, "value": self.value, "color": self.color}
@@ -203,7 +203,7 @@ class Field(object):
                 cvtfl = list(self.cvtfunc)
             lst = list(self.value)
             if not cvtfl:
-		strg = lst[0]
+                strg = lst[0]
             else:
                 strg = cvtfl[0](self, lst[0])
             for i in range(1, len(lst)):
