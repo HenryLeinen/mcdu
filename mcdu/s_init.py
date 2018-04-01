@@ -58,9 +58,15 @@ class InitIndexPage1(Page):
             pass
         else:
             self.fields[5][0].mode = Field.mandatory
+            self.fields[5][0].color = Field.orange
+            self.fields[0][-1].color = Field.blue
+            self.fields[3][0].color = Field.blue
+            self.fields[3][-1].color = Field.blue
             self.update_latitude(self.sys.fromAirport.latitude)
             self.update_longitude(self.sys.fromAirport.longitude)
             self.field_update(0,0,"")
+            self.field_update(1,0, "")
+            self.field_update(5,0, u"\u25af"*5+"/"+u"\u25af"*3)
 
     def update_AlternateAirport(self, value):
         self.sys.altAirport = self.mcdu.database.findAirport(value)
