@@ -7,7 +7,6 @@ class Page(object):
 
     def __new__(cls, *args):
         if not cls._instance:
-#            cls._instance = super(Page, cls).__new__(cls, *args)
             cls._instance = super(Page, cls).__new__(cls)
             cls._instance.fields = None
 
@@ -97,7 +96,8 @@ class Field(object):
     white = "#ffffff"
     blue = "#20c2e3"
     orange = "#ffaf47"
-    green = "#00ff00"
+#    green = "#00ff00"
+    green = "#8fac99"
 
     mandatory = 1
     optional = 0
@@ -138,7 +138,7 @@ class Field(object):
         self.format = kwargs.pop("format", None)
         self.action = kwargs.pop("action", None)
         self.update = kwargs.pop("update", None)
-        self.color = kwargs.pop("color", Field.white)
+        self.color = kwargs.pop("color", Field.green)
         self.mode  = kwargs.pop("mode", Field.optional)
         self.cvtfunc = kwargs.pop("convert", None)
 
@@ -199,6 +199,7 @@ class Field(object):
     def getValue(self):
         if type(self.value) == tuple:
             cvtfl = []
+            fmts = list(self.format)
             if type(self.cvtfunc) == tuple:
                 cvtfl = list(self.cvtfunc)
             lst = list(self.value)
@@ -206,11 +207,15 @@ class Field(object):
                 strg = lst[0]
             else:
                 strg = cvtfl[0](self, lst[0])
+            if fmts[0] == Field.temperature:
+                strg += u"\u00b0"
             for i in range(1, len(lst)):
                 if not cvtfl:
                     strg += "/" + lst[i]
                 else:
                     strg += "/" + cvtfl[i](self,lst[i])
+                if fmts[i] == Field.temperature:
+                    strg += u"\u00b0"
             return strg
         else:
             return self.value

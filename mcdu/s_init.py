@@ -1,6 +1,7 @@
 from subsystem import Subsystem
 from page import Page, Field
 from database import *
+from helper import Longitude, Latitude
 import math
 
 class INIT(Subsystem):
@@ -10,10 +11,10 @@ class INIT(Subsystem):
         Subsystem.__init__(self)
         self.api = api
         self.CoRoute = ""
-        self.fromto = ""
+        self.fromAirport = ""
+        self.toAirport = ""
         self.AltCoRoute = ""
         self.flightno = ""
-        self.position = (45.781111, 108.5038888)
         self.costindex = ""
         self.tropo = 36090
 
@@ -36,11 +37,12 @@ class InitIndexPage1(Page):
         self.field(0, "CO RTE", 10, format=Field.coroute, update=self.update_CoRoute, mode=Field.mandatory)
         self.field(0, "FROM/TO", (4,4), format=(Field.icao, Field.icao), update=self.update_FromTo, mode=Field.mandatory)
         self.field(1, "ALTN/CO RTE", 10, format=Field.coroute, update=self.update_AltCoRoute)
+        self.field(1, "ALTN", 4, format=Field.icao, update=self.update_AlternateAirport, mode=Field.optional)
         self.field(2, "FLT NBR", 7, format=Field.flightno, update=self.update_FlightNo)
         self.field(2, "", "ALIGN IRS>", action=self.show_alignIRS)
-        self.field(3, "LAT", '{0:04d}.{1:1d}'.format(int(math.floor(self.sys.position[0]*100)), int(10*(self.sys.position[0]*100-math.floor(self.sys.position[0]*100)))))
-        self.field(3, "LONG", '{0:05d}.{1:1d}'.format(int(math.floor(self.sys.position[1])), 10*int(self.sys.position[1]-math.floor(self.sys.position[1]))))
-        self.field(4, "COST INDEX", 3, update=self.update_CostIndex)
+        self.field(3, "LAT", "----.--", mode=Field.optional)
+        self.field(3, "LONG", "-----.--", mode=Field.optional)
+        self.field(4, "COST INDEX", -3, update=self.update_CostIndex)
         self.field(4, "", "WIND>", action=self.show_wind)
         self.field(5, "CRZ FL/TEMP", (5,3), format=(Field.flightlevel, Field.temperature), update=self.update_CrzFlTemp, mode=Field.optional)
         self.field(5, "TROPO", str(self.sys.tropo), color=Field.blue, update=self.update_tropo)
@@ -50,13 +52,28 @@ class InitIndexPage1(Page):
         # Also update all the other data
 
     def update_FromTo(self, value):
-        self.sys.fromto = value
-        aptFrom = self.mcdu.database.findAirport(value[0])
-        aptTo = self.mcdu.database.findAirport(value[1])
-        if aptFrom:
-            aptFrom.dump()
-        if aptTo:
-            aptTo.dump()
+        self.sys.fromAirport = self.mcdu.database.findAirport(value[0])
+        self.sys.toAirport = self.mcdu.database.findAirport(value[1])
+        if not self.sys.fromAirport or not self.sys.toAirport:
+            pass
+        else:
+            self.fields[5][0].mode = Field.mandatory
+            self.update_latitude(self.sys.fromAirport.latitude)
+            self.update_longitude(self.sys.fromAirport.longitude)
+            self.field_update(0,0,"")
+
+    def update_AlternateAirport(self, value):
+        self.sys.altAirport = self.mcdu.database.findAirport(value)
+        if self.sys.altAirport:
+            self.sys.altAirport.dump()
+            
+    def update_latitude(self, value):
+        self.latitude = '{0:02d}{1:02d}.{2:1d}{3:1s}'.format(value.degree, value.minute, value.second, value.sign)
+        self.field_update(3, 0, self.latitude)
+
+    def update_longitude(self, value):
+        self.longitude = '{0:03d}{1:02d}.{2:1d}{3:1s}'.format(Longitude.getDegree(value), Longitude.getMinute(value), Longitude.getSecond(value), Longitude.getDirection(value))
+        self.field_update(3, 1, self.longitude)
 
     def update_AltCoRoute(self, value):
         self.sys.AltCoRoute = value

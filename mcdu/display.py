@@ -41,6 +41,7 @@ colt = 511
 VAL_HDG = -1
 
 class myDisplay(object):
+	defColor = "#8fac99"
 
 	def __init__(self):
 		print ("Class myDisplay initialize")
@@ -151,39 +152,39 @@ class myDisplay(object):
 		self.w.pack()
 
 		# Create the title
-		self.w.create_text( colt, rowt, text=" ", font=self.fnt_big, fill="#ffffff", tags="TITLE", anchor=N)
+		self.w.create_text( colt, rowt, text=" ", font=self.fnt_big, fill=myDisplay.defColor, tags="TITLE", anchor=N)
 		# Create the scratchpad
-		self.w.create_text( coll, rowsc,text=" ", font=self.fnt_big, fill="#ffffff", tags="SCRATCH", anchor=NW)
+		self.w.create_text( coll, rowsc,text=" ", font=self.fnt_big, fill=myDisplay.defColor, tags="SCRATCH", anchor=NW)
 		# Create the lines
-		self.w.create_text( coll, row0, text=" ", font=self.fnt_sml, fill="#ffffff", tags="LSK0L", anchor=NW)
-		self.w.create_text( coll, row0s,text=" ", font=self.fnt_big, fill="#ffffff", tags="LSK0Ls",anchor=NW)
-		self.w.create_text( colr, row0, text=" ", font=self.fnt_sml, fill="#ffffff", tags="LSK0R", anchor=NE)
-		self.w.create_text( colr, row0s,text=" ", font=self.fnt_big, fill="#ffffff", tags="LSK0Rs",anchor=NE)
+		self.w.create_text( coll, row0, text=" ", font=self.fnt_sml, fill=myDisplay.defColor, tags="LSK0L", anchor=NW)
+		self.w.create_text( coll, row0s,text=" ", font=self.fnt_big, fill=myDisplay.defColor, tags="LSK0Ls",anchor=NW)
+		self.w.create_text( colr, row0, text=" ", font=self.fnt_sml, fill=myDisplay.defColor, tags="LSK0R", anchor=NE)
+		self.w.create_text( colr, row0s,text=" ", font=self.fnt_big, fill=myDisplay.defColor, tags="LSK0Rs",anchor=NE)
 
-		self.w.create_text( coll, row1, text=" ", font=self.fnt_sml, fill="#ffffff", tags="LSK1L", anchor=NW)
-		self.w.create_text( coll, row1s,text=" ", font=self.fnt_big, fill="#ffffff", tags="LSK1Ls",anchor=NW)
-		self.w.create_text( colr, row1, text=" ", font=self.fnt_sml, fill="#ffffff", tags="LSK1R", anchor=NE)
-		self.w.create_text( colr, row1s,text=" ", font=self.fnt_big, fill="#ffffff", tags="LSK1Rs",anchor=NE)
+		self.w.create_text( coll, row1, text=" ", font=self.fnt_sml, fill=myDisplay.defColor, tags="LSK1L", anchor=NW)
+		self.w.create_text( coll, row1s,text=" ", font=self.fnt_big, fill=myDisplay.defColor, tags="LSK1Ls",anchor=NW)
+		self.w.create_text( colr, row1, text=" ", font=self.fnt_sml, fill=myDisplay.defColor, tags="LSK1R", anchor=NE)
+		self.w.create_text( colr, row1s,text=" ", font=self.fnt_big, fill=myDisplay.defColor, tags="LSK1Rs",anchor=NE)
 
-		self.w.create_text( coll, row2, text=" ", font=self.fnt_sml, fill="#ffffff", tags="LSK2L", anchor=NW)
-		self.w.create_text( coll, row2s,text=" ", font=self.fnt_big, fill="#ffffff", tags="LSK2Ls",anchor=NW)
-		self.w.create_text( colr, row2, text=" ", font=self.fnt_sml, fill="#ffffff", tags="LSK2R", anchor=NE)
-		self.w.create_text( colr, row2s,text=" ", font=self.fnt_big, fill="#ffffff", tags="LSK2Rs",anchor=NE)
+		self.w.create_text( coll, row2, text=" ", font=self.fnt_sml, fill=myDisplay.defColor, tags="LSK2L", anchor=NW)
+		self.w.create_text( coll, row2s,text=" ", font=self.fnt_big, fill=myDisplay.defColor, tags="LSK2Ls",anchor=NW)
+		self.w.create_text( colr, row2, text=" ", font=self.fnt_sml, fill=myDisplay.defColor, tags="LSK2R", anchor=NE)
+		self.w.create_text( colr, row2s,text=" ", font=self.fnt_big, fill=myDisplay.defColor, tags="LSK2Rs",anchor=NE)
 
-		self.w.create_text( coll, row3, text=" ", font=self.fnt_sml, fill="#ffffff", tags="LSK3L", anchor=NW)
-		self.w.create_text( coll, row3s,text=" ", font=self.fnt_big, fill="#ffffff", tags="LSK3Ls",anchor=NW)
-		self.w.create_text( colr, row3, text=" ", font=self.fnt_sml, fill="#ffffff", tags="LSK3R", anchor=NE)
-		self.w.create_text( colr, row3s,text=" ", font=self.fnt_big, fill="#ffffff", tags="LSK3Rs",anchor=NE)
+		self.w.create_text( coll, row3, text=" ", font=self.fnt_sml, fill=myDisplay.defColor, tags="LSK3L", anchor=NW)
+		self.w.create_text( coll, row3s,text=" ", font=self.fnt_big, fill=myDisplay.defColor, tags="LSK3Ls",anchor=NW)
+		self.w.create_text( colr, row3, text=" ", font=self.fnt_sml, fill=myDisplay.defColor, tags="LSK3R", anchor=NE)
+		self.w.create_text( colr, row3s,text=" ", font=self.fnt_big, fill=myDisplay.defColor, tags="LSK3Rs",anchor=NE)
 
-		self.w.create_text( coll, row4, text=" ", font=self.fnt_sml, fill="#ffffff", tags="LSK4L", anchor=NW)
-		self.w.create_text( coll, row4s,text=" ", font=self.fnt_big, fill="#ffffff", tags="LSK4Ls",anchor=NW)
-		self.w.create_text( colr, row4, text=" ", font=self.fnt_sml, fill="#ffffff", tags="LSK4R", anchor=NE)
-		self.w.create_text( colr, row4s,text=" ", font=self.fnt_big, fill="#ffffff", tags="LSK4Rs",anchor=NE)
+		self.w.create_text( coll, row4, text=" ", font=self.fnt_sml, fill=myDisplay.defColor, tags="LSK4L", anchor=NW)
+		self.w.create_text( coll, row4s,text=" ", font=self.fnt_big, fill=myDisplay.defColor, tags="LSK4Ls",anchor=NW)
+		self.w.create_text( colr, row4, text=" ", font=self.fnt_sml, fill=myDisplay.defColor, tags="LSK4R", anchor=NE)
+		self.w.create_text( colr, row4s,text=" ", font=self.fnt_big, fill=myDisplay.defColor, tags="LSK4Rs",anchor=NE)
 
-		self.w.create_text( coll, row5, text=" ", font=self.fnt_sml, fill="#ffffff", tags="LSK5L", anchor=NW)
-		self.w.create_text( coll, row5s,text=" ", font=self.fnt_big, fill="#ffffff", tags="LSK5Ls",anchor=NW)
-		self.w.create_text( colr, row5, text=" ", font=self.fnt_sml, fill="#ffffff", tags="LSK5R", anchor=NE)
-		self.w.create_text( colr, row5s,text=" ", font=self.fnt_big, fill="#ffffff", tags="LSK5Rs",anchor=NE)
+		self.w.create_text( coll, row5, text=" ", font=self.fnt_sml, fill=myDisplay.defColor, tags="LSK5L", anchor=NW)
+		self.w.create_text( coll, row5s,text=" ", font=self.fnt_big, fill=myDisplay.defColor, tags="LSK5Ls",anchor=NW)
+		self.w.create_text( colr, row5, text=" ", font=self.fnt_sml, fill=myDisplay.defColor, tags="LSK5R", anchor=NE)
+		self.w.create_text( colr, row5s,text=" ", font=self.fnt_big, fill=myDisplay.defColor, tags="LSK5Rs",anchor=NE)
 
 	def mainloop(self):
 		print ("Entering Mainloop")

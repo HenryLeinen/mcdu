@@ -1,3 +1,5 @@
+from helper import Latitude, Longitude
+
 # Implements the database provider
 # The current implementation uses X-FMC data, which can be obtained from navigraph.
 # The database files are expected to be stored in the subfolder $(MCDU_MAIN)/database
@@ -48,14 +50,20 @@ class Database(object):
                         a+=1
                         apts = txt.split('|')
                         if apts[1] == airport:
-                            apt = Airport(apts[1], apts[2], apts[3], apts[4], apts[5])
-#                            print ("Airport " + apt.name + " found. Searching runways...")
+                            lat = float(apts[3])
+                            lat /= 1000000.0
+                            lon = float(apts[4])
+                            lon /= 1000000.0
+                            apt = Airport(apts[1], apts[2], lat, lon, apts[5])
                             state = 2
                 elif state == 2:   # add runways
                     if txt[0]== 'R':
                         rwys = txt.split('|')
-#                        print ("Runway " + rwys[1] + " found.")
-                        apt.addRunway(rwys[1], rwys[2], rwys[3], rwys[4], rwys[5], rwys[6], rwys[7], rwys[8], rwys[9], rwys[10], rwys[11])
+                        lat = float(rwys[7])
+                        lat /= 1000000.0
+                        lon = float(rwys[8])
+                        lon /= 1000000.0
+                        apt.addRunway(rwys[1], rwys[2], rwys[3], rwys[4], rwys[5], rwys[6], lat, lon, rwys[9], rwys[10], rwys[11])
                     else:
                         return apt
         print ("Airport with ID: " + airport + " not found !!!")
@@ -84,8 +92,8 @@ class Airport(object):
     def __init__(self, id, name, latitude, longitude, altitude):
         self.name = name
         self.id = id
-        self.latitude = latitude
-        self.longitude = longitude
+        self.latitude = Latitude(latitude)
+        self.longitude = Longitude(longitude)
         self.altitude = altitude
         self.runways = {}
 
