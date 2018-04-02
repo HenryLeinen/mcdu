@@ -1,4 +1,4 @@
-from avionics import Avionics
+from mcdu.avionics import Avionics
 
 import threading
 import socket

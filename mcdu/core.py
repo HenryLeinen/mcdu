@@ -1,7 +1,16 @@
-from page import Page
-from database import Database
+from mcdu.page import Page
+from mcdu.database import Database
 
 class MCDU():
+    FP_PREFLIGHT = 1
+    FP_TAKEOFF = 2
+    FP_CLIMB = 3
+    FP_CRUISE = 4
+    FP_DESCENT = 5
+    FP_APPROACH = 6
+    FP_GO_AROUND = 7
+    FP_DONE = 0
+
     def __init__(self):
         self.sys = None
         self.page = None
@@ -47,11 +56,17 @@ class MCDU():
     def init(self):
         """Show the init page."""
 #        print "TBD: INIT handling"
+        for s in self.subsystems:
+            if s.name == "INIT":
+                self.subsystem_activate(s)
         pass
 
     def data(self):
         """Show the data page."""
 #        print "TBD: DATA handling"
+        for s in self.subsystems:
+            if s.name == "DATA":
+                self.subsystem_activate(s)
         pass
 
     def f_pln(self):
@@ -141,7 +156,7 @@ class MenuPage(Page):
             self.field(i, "", "<" + subsystem.name)
 
     def lsk(self, pos):
-        num, side = pos
+        num, _ = pos
 
         if num < len(self.mcdu.subsystems):
             sys = self.mcdu.subsystems[num]

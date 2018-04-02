@@ -1,6 +1,6 @@
-from subsystem import Subsystem
-from avionics import Avionics
-from page import Page, Field
+from mcdu.subsystem import Subsystem
+from mcdu.avionics import Avionics
+from mcdu.page import Page, Field
 
 import textwrap, time, os
 
@@ -42,7 +42,7 @@ class ACARS(Subsystem):
         if self.avionics.progress <= len(self.progress):
             return
 
-        for i in range(self.avionics.progress - len(self.progress)):
+        for _ in range(self.avionics.progress - len(self.progress)):
             ptime = time.strftime("%H%MZ", time.gmtime())
             self.progress.append(ptime)
             self.report()
@@ -262,7 +262,7 @@ class MessagesPage(Page):
         Page.refresh(self)
 
     def lsk(self, pos):
-        num, side = pos
+        num, _ = pos
 
         if num < 5 and num < len(self.sys.messages):
             self.mcdu.show(MessagePage)

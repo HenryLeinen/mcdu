@@ -1,7 +1,7 @@
-from subsystem import Subsystem
-from page import Page, Field
-from database import *
-from helper import Longitude, Latitude
+from mcdu.subsystem import Subsystem
+from mcdu.page import Page, Field
+from mcdu.database import Database, Airport, Waypoint, Runway
+from mcdu.helper import Longitude, Latitude
 import math
 
 class INIT(Subsystem):
@@ -67,6 +67,10 @@ class InitIndexPage1(Page):
             self.field_update(0,0,"")
             self.field_update(1,0, "")
             self.field_update(5,0, u"\u25af"*5+"/"+u"\u25af"*3)
+            dist = self.sys.fromAirport.distanceToObject(self.sys.toAirport)
+            print ("Distance between ",self.sys.fromAirport.getID() , " and " , self.sys.toAirport.getID() , " is :" , dist, "nm")
+            crs = self.sys.fromAirport.courseToObject(self.sys.toAirport)
+            print ("Course from ", self.sys.fromAirport.getID(), " and ", self.sys.toAirport.getID(), " is ", crs)
 
     def update_AlternateAirport(self, value):
         self.sys.altAirport = self.mcdu.database.findAirport(value)

@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 
-from core import MCDU
-from acars import ACARS
-from atc import ATC
-from network import ACARS_API
-from display import myDisplay
-from s_data import DATA
-from s_init import INIT
-from database import Database
+from mcdu.core import MCDU
+from mcdu.acars import ACARS
+from mcdu.atc import ATC
+from mcdu.network import ACARS_API
+from mcdu.display import myDisplay
+from mcdu.s_data import DATA
+from mcdu.s_init import INIT
+from mcdu.database import Database
 
 import os, sys
 
@@ -24,10 +24,10 @@ def run():
 
     sim = config.get("General", "sim")
     if sim == "fsx":
-        from fsx import FSXReceiver
+        from mcdu.fsx import FSXReceiver
         receiver = FSXReceiver()
     elif sim == "xplane":
-        from xplane import XPlaneReceiver
+        from mcdu.xplane import XPlaneReceiver
         receiver = XPlaneReceiver()
     else:
         print("no simulator set")
@@ -64,7 +64,7 @@ def run():
 #        receiver.run()
     except KeyboardInterrupt:
         print("quitting...")
-    except Exception as e:
+    except Exception:
         import traceback
         traceback.print_exc()
         print("quitting...")

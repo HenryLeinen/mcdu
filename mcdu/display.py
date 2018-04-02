@@ -1,9 +1,10 @@
 try:
-	from Tkinter import *
+	from Tkinter import Tk, Canvas
 except ImportError:
-	from tkinter import *
+	from tkinter import Tk, Canvas
+	from tkinter.constants import N, S, W, E, NW, SW, SE, NE, CENTER
 
-from keyboard import keyboard
+from mcdu.keyboard import keyboard
 
 try:
 	import tkFont
@@ -78,6 +79,16 @@ class myDisplay(object):
 			self.mcdu.lsk((num,side))
 		elif message == "MENU":
 			self.mcdu.menu()
+		elif message == "INIT":
+			self.mcdu.init()
+		elif message == "F_PLN":
+			self.mcdu.init()
+		elif message == "RAD_NAV":
+			self.mcdu.radNav()
+		elif message == "PERF":
+			self.mcdu.perf()
+		elif message == "DIR":
+			self.mcdu.dir()
 		else:
 			self.mcdu.scratch_input(message)
 

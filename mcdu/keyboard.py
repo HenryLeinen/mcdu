@@ -32,67 +32,72 @@ else:
 
 class KBHit:
 
-    def __init__(self):
-        '''Creates a KBHit object that you can call to do various keyboard things.
-        '''
-        if os.name == 'nt':
-            pass
-        else:
-            # Save the terminal settings
-            self.fd = sys.stdin.fileno()
-            self.new_term = termios.tcgetattr(self.fd)
-            self.old_term = termios.tcgetattr(self.fd)
+	def __init__(self):
+		'''Creates a KBHit object that you can call to do various keyboard things.
+		'''
+		if os.name == 'nt':
+			pass
+		else:
+			# Save the terminal settings
+			self.fd = sys.stdin.fileno()
+			self.new_term = termios.tcgetattr(self.fd)
+			self.old_term = termios.tcgetattr(self.fd)
 
-            # New terminal setting unbuffered
-            self.new_term[3] = (self.new_term[3] & ~termios.ICANON & ~termios.ECHO)
-            termios.tcsetattr(self.fd, termios.TCSAFLUSH, self.new_term)
+			# New terminal setting unbuffered
+			self.new_term[3] = (self.new_term[3] & ~termios.ICANON & ~termios.ECHO)
+			termios.tcsetattr(self.fd, termios.TCSAFLUSH, self.new_term)
 
-            # Support normal-terminal reset at exit
-            atexit.register(self.set_normal_term)
+			# Support normal-terminal reset at exit
+			atexit.register(self.set_normal_term)
 
-    def set_normal_term(self):
-        ''' Resets to normal terminal.  On Windows this is a no-op.
-        '''
-        if os.name == 'nt':
-            pass
-        else:
-            termios.tcsetattr(self.fd, termios.TCSAFLUSH, self.old_term)
+	def set_normal_term(self):
+		''' Resets to normal terminal.  On Windows this is a no-op.
+		'''
+		if os.name == 'nt':
+			pass
+		else:
+			termios.tcsetattr(self.fd, termios.TCSAFLUSH, self.old_term)
 
-    def getch(self):
-        ''' Returns a keyboard character after kbhit() has been called.
-            Should not be called in the same program as getarrow().
-        '''
-        s = ''
-        if os.name == 'nt':
-            return msvcrt.getch().decode('utf-8')
-        else:
-            return sys.stdin.read(1)
+	def getch(self):
+		''' Returns a keyboard character after kbhit() has been called.
+		Should not be called in the same program as getarrow().
+		'''
+#		s = ''
+		if os.name == 'nt':
+			c = msvcrt.getch()
+			if ord(c) == 0xE0:
+				c = msvcrt.getch()
+				vals = [72,77,80,75]
+				return chr(vals.index(ord(c.decode('utf-8'))))
+			return c.decode('utf-8')
+		else:
+			return sys.stdin.read(1)
 
-    def getarrow(self):
-        ''' Returns an arrow-key code after kbhit() has been called. Codes are
-        0 : up
-        1 : right
-        2 : down
-        3 : left
-        Should not be called in the same program as getch().
-        '''
-        if os.name == 'nt':
-            msvcrt.getch() # skip 0xE0
-            c = msvcrt.getch()
-            vals = [72, 77, 80, 75]
-        else:
-            c = sys.stdin.read(3)[2]
-            vals = [65, 67, 66, 68]
-        return vals.index(ord(c.decode('utf-8')))
+	def getarrow(self):
+		''' Returns an arrow-key code after kbhit() has been called. Codes are
+		0 : up
+		1 : right
+		2 : down
+		3 : left
+		Should not be called in the same program as getch().
+		'''
+		if os.name == 'nt':
+			msvcrt.getch() # skip 0xE0
+			c = msvcrt.getch()
+			vals = [72, 77, 80, 75]
+		else:
+			c = sys.stdin.read(3)[2]
+			vals = [65, 67, 66, 68]
+		return vals.index(ord(c.decode('utf-8')))
 
-    def kbhit(self):
-        ''' Returns True if keyboard character was hit, False otherwise.
-        '''
-        if os.name == 'nt':
-            return msvcrt.kbhit()
-        else:
-            dr,dw,de = select([sys.stdin], [], [], 0)
-            return dr != []
+	def kbhit(self):
+		''' Returns True if keyboard character was hit, False otherwise.
+		'''
+		if os.name == 'nt':
+			return msvcrt.kbhit()
+		else:
+			dr,dw,de = select([sys.stdin], [], [], 0)
+			return dr != []
 
 
 
@@ -177,8 +182,27 @@ class keyboard:
 		else:
 			if self.kb.kbhit():
 				byte = self.kb.getch()
-				print ("Received char "+byte+" KeyCOde." + str(ord(byte)))
-				message = self.interpret_char(byte)
+				print ("Received char " , byte , " KeyCode." + str(ord(byte)))
+				if byte == '!':	# '!' activates the INIT page
+					message = "INIT"
+				elif byte == '\"':			# '"' activates the DATA page
+					message = "DATA"
+				elif byte == '§':			# activates the F_PLN page
+					message = "F_PLN"
+				elif byte == '$':			# activates the PERF page
+					message ="PERF"
+				elif ord(byte) == 0:		# arrow up
+					message = "PAGE_UP"
+				elif ord(byte) == 2:		# arrow dn
+					message = "PAGE_DN"
+				elif ord(byte) == 1:		# arrow right
+					message = "NEXT_PAG"
+				elif ord(byte) == 3:		# arrow left
+					message = "AIRPORT"
+				elif ord(byte) == 8:		# DEL key
+					message = "CLR"
+				else:
+					message = self.interpret_char(byte)
 				if not message:
 					message=byte
 				print ("Maps to message "+message)
