@@ -82,13 +82,15 @@ class myDisplay(object):
 		elif message == "INIT":
 			self.mcdu.init()
 		elif message == "F_PLN":
-			self.mcdu.init()
+			self.mcdu.f_pln()
 		elif message == "RAD_NAV":
 			self.mcdu.radNav()
 		elif message == "PERF":
 			self.mcdu.perf()
 		elif message == "DIR":
 			self.mcdu.dir()
+		elif message == "DATA":
+			self.mcdu.data()
 		else:
 			self.mcdu.scratch_input(message)
 

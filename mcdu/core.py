@@ -1,5 +1,6 @@
 from mcdu.page import Page
 from mcdu.database import Database
+from mcdu.flightplan import FlightPlan
 
 class MCDU():
     FP_PREFLIGHT = 1
@@ -18,6 +19,7 @@ class MCDU():
         self.displays = []
         self.scratch = ""
         self.database = None
+        self.flightplan = None
 
     def database_register(self, database):
         """Register database, eventually pre load data"""
@@ -72,6 +74,9 @@ class MCDU():
     def f_pln(self):
         """Show the flightplan page."""
 #        print "TBD: F_PLN handling"
+        for s in self.subsystems:
+            if s.name == "F_PLN":
+                self.subsystem_activate(s)
         pass
 
     def rad_nav(self):

@@ -8,11 +8,15 @@ class FlightPlanLeg(object):
         self.ID = None
         self.nextLeg = 0
         self.object = NavObj
+        self.altitude = 0
+        self.speed = 0
+        self.heading = 0
+        self.time = 0
 
 class FlightPlan(object):
 
     def __init__(self, fromApt, toApt):
-        self.legs = [fromApt, toApt]
+        self.legs = [FlightPlanLeg(fromApt), FlightPlanLeg(toApt)]
 
     def insertBefore(self, num, obj, link):
         if len(self.legs) > num and num > 0:
@@ -25,3 +29,17 @@ class FlightPlan(object):
         else:
             raise Exception("invalid insert operation") 
 
+
+    def getLeg(self, i):
+        if not self.legs:
+            return None
+        elif len(self.legs) > i:
+            return self.legs[i]
+        else:
+            return None
+
+    def getNumberOfLegs(self):
+        if not self.legs:
+            return 0
+        else:
+            return len(self.legs)

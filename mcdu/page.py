@@ -90,8 +90,10 @@ class Field(object):
     latitude = u"^[0-9]{2}\u00b0[0-9]{2}[.][0-9][NS]$"
     longitude =u"^(0[0-9]{2}|1[0-8][0-9])\u00b0[0-9]{2}[.][0-9][WE]$"
     coroute = "^GL[A-Z]{8}$"
-    flightlevel = "^([0-3][0-9]{4})|(FL[0-3][0-9]{2})$"
+    flightlevel = "^([0-3][0-9]{4})|(FL[1-3][0-9]{2})$"
     temperature = "^[+-][0-9]{2}$"
+    heading = "^([0-2]{0:1}[0-9]{2})|(3[0-5][0-9])$"
+    speedknots = "^{[0-9]{0:3}$"
 
     white = "#ffffff"
     blue = "#20c2e3"
@@ -128,7 +130,13 @@ class Field(object):
         return u'{0:3d}\u00b0{1:2d}.{2:1d}{3:1s}'.format(p1, p2, p3, d)
 
     def convertAltitudeToFlightLevel(self, value):
-        return 'FL{0:3d}'.format(int(value/100))
+        if int(value) > 18000:
+            return 'FL{0:3d}'.format(int(value/100))
+        else:
+            return value
+
+    def convertToHeading(self, value):
+        return u'{0:3d}\u00b0'.format(int(value))
 
     # Orange Rectangular fields for mandatory user entered data
     # Green dash fields for optional user entered data
@@ -203,7 +211,7 @@ class Field(object):
             if type(self.cvtfunc) == tuple:
                 cvtfl = list(self.cvtfunc)
             lst = list(self.value)
-            if not cvtfl:
+            if not cvtfl or not cvtfl[0]:
                 strg = lst[0]
             else:
                 strg = cvtfl[0](self, lst[0])

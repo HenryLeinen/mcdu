@@ -2,7 +2,17 @@ from mcdu.subsystem import Subsystem
 from mcdu.page import Page, Field
 from mcdu.database import Database, Airport, Waypoint, Runway
 from mcdu.helper import Longitude, Latitude
+from mcdu.flightplan import FlightPlan
 import math
+
+
+class Wind(object):
+
+    def __init__(self, value):
+        d, k, h = value
+        self.dir = int(d)
+        self.knots = int(k)
+        self.height = int(h)
 
 class INIT(Subsystem):
     name = "INIT"
@@ -17,6 +27,9 @@ class INIT(Subsystem):
         self.flightno = ""
         self.costindex = ""
         self.tropo = 36090
+        self.climbWinds = []
+        self.cruiseWinds = []
+        self.descendWinds = []
 
     def activate(self):
         self.mcdu.show(InitIndexPage1)
@@ -54,6 +67,7 @@ class InitIndexPage1(Page):
     def update_FromTo(self, value):
         self.sys.fromAirport = self.mcdu.database.findAirport(value[0])
         self.sys.toAirport = self.mcdu.database.findAirport(value[1])
+        self.mcdu.flightplan = FlightPlan(self.sys.fromAirport, self.sys.toAirport)
         if not self.sys.fromAirport or not self.sys.toAirport:
             pass
         else:
@@ -116,16 +130,64 @@ class ClimbWindPage(Page):
     title = "CLIMB WIND"
 
     def init(self):
-        self.field(0, "TRU WIND/ALT", "")
-        self.field(4, "", "")
+        self.field(0, "TRU WIND/ALT", "", convert=(Field.convertToHeading, None, Field.convertAltitudeToFlightLevel), format=(Field.heading, Field.speedknots, Field.flightlevel), update=self.on_update_wind0)
+        self.field(0, "HISTORY", "WIND>", action=self.show_history)
+        self.field(1, "", "", convert=(Field.convertToHeading, None, Field.convertAltitudeToFlightLevel), format=(Field.heading, Field.speedknots, Field.flightlevel), update=self.on_update_wind1)
+        self.field(1, "WIND", "REQUEST*", action=self.wind_request)
+        self.field(2, "", "", convert=(Field.convertToHeading, None, Field.convertAltitudeToFlightLevel), format=(Field.heading, Field.speedknots, Field.flightlevel), update=self.on_update_wind2)
+        self.field(3, "", "", convert=(Field.convertToHeading, None, Field.convertAltitudeToFlightLevel), format=(Field.heading, Field.speedknots, Field.flightlevel), update=self.on_update_wind3)
+        self.field(4, "", "", convert=(Field.convertToHeading, None, Field.convertAltitudeToFlightLevel), format=(Field.heading, Field.speedknots, Field.flightlevel), update=self.on_update_wind4)
         self.field(4, "", "NEXT PHASE>", action=self.show_nextphase)
         self.field(5, "", "<RETURN", action=self.show_return)
+
+    def refresh(self):
+        # Only show
+#        self.clear()
+        print ("Refreshing page !")
+        j = 0
+        n = len(self.sys.climbWinds) 
+        for i in range(n):
+            item = u"{0:03d}\u00b0/{1:03d}/{2:5d}".format(self.sys.climbWinds[i].dir, self.sys.climbWinds[i].knots, self.sys.climbWinds[i].height)
+            self.field_update(i, 0, item)
+            j += 1
+        print ("Updating field ", j)
+        self.field_update(j, 0, u"[   ]\u00b0/[   ]/[     ]")
+        Page.refresh(self)
+
+    def on_update_wind0(self, value):
+        if len(self.sys.climbWinds) == 0:
+            self.sys.climbWinds.append(Wind(value))
+        else:
+            self.sys.climbWinds[0] = Wind(value)
+        self.refresh()
+
+    def on_update_wind1(self, value):
+        if len(self.sys.climbWinds) == 1:
+            self.sys.climbWinds.append(Wind(value))
+        else:
+            self.sys.climbWinds[1] = Wind(value)
+        self.refresh()
+
+    def on_update_wind2(self, value):
+        pass
+
+    def on_update_wind3(self, value):
+        pass
+
+    def on_update_wind4(self, value):
+        pass
 
     def show_nextphase(self):
         self.mcdu.show(CruiseWindPage)
 
     def show_return(self):
         self.sys.activate()
+
+    def show_history(self):
+        pass
+
+    def wind_request(self):
+        pass
 
 class CruiseWindPage(Page):
     title = "CRUISE WIND"

@@ -8,6 +8,8 @@ from mcdu.display import myDisplay
 from mcdu.s_data import DATA
 from mcdu.s_init import INIT
 from mcdu.database import Database
+from mcdu.s_f_plan import FPLAN
+from mcdu.s_perf import PERF
 
 import os, sys
 
@@ -41,12 +43,16 @@ def run():
     atc = ATC(api)
     data = DATA(api)
     init = INIT(api)
+    fplan = FPLAN(api)
+    perf = PERF(api)
 
     mcdu = MCDU()
     mcdu.subsystem_register(acars)
     mcdu.subsystem_register(atc)
     mcdu.subsystem_register(data)
     mcdu.subsystem_register(init)
+    mcdu.subsystem_register(fplan)
+    mcdu.subsystem_register(perf)
     mcdu.database_register(db)
     mcdu.menu()
 

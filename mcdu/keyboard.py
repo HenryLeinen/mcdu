@@ -96,7 +96,7 @@ class KBHit:
 		if os.name == 'nt':
 			return msvcrt.kbhit()
 		else:
-			dr,dw,de = select([sys.stdin], [], [], 0)
+			dr,_,_ = select([sys.stdin], [], [], 0)
 			return dr != []
 
 
@@ -116,7 +116,7 @@ class keyboard:
 	def open(self):
 		self.noInput = False
 		try:
-			self.file = open("/dev/kbdscan","ro")
+			self.file = open("/dev/kbdscan","r")
 		except:
 			self.noInput = True					# No KbdScan device, so use the regular stdin keyboard
 			self.kb = KBHit()
@@ -187,9 +187,9 @@ class keyboard:
 					message = "INIT"
 				elif byte == '\"':			# '"' activates the DATA page
 					message = "DATA"
-				elif byte == '§':			# activates the F_PLN page
+				elif byte == '$':			# activates the F_PLN page
 					message = "F_PLN"
-				elif byte == '$':			# activates the PERF page
+				elif byte == '%':			# activates the PERF page
 					message ="PERF"
 				elif ord(byte) == 0:		# arrow up
 					message = "PAGE_UP"
